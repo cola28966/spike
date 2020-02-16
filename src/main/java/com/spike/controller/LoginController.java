@@ -39,18 +39,6 @@ public class LoginController {
     @ResponseBody
     Result<Boolean> doLogin(@Valid LoginVo loginVo, HttpServletResponse response){
         log.info(loginVo.toString());
-       /* String passInput = loginVo.getPassword();
-        String mobile = loginVo.getMobile();
-        if(StringUtils.isEmpty(passInput)) {//
-            return Result.error(CodeMsg.PASSWORD_EMPTY);
-        }
-        if(StringUtils.isEmpty(mobile)) {//
-            return Result.error(CodeMsg.MOBILE_EMPTY);
-        }
-        if(!ValidatorUtil.isMobile(mobile)) {//
-            return Result.error(CodeMsg.MOBILE_ERROR);
-        }*/
-        //登录
          userService.login(response,loginVo);
          return Result.success(true);
     }
