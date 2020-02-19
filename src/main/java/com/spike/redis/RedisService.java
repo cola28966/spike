@@ -31,7 +31,7 @@ public class RedisService {
     public <T>  boolean set(KeyPrefix keyPrefix,String key,T value){
         Jedis jedis= null;
         try {
-            System.out.println(redisConfig.getHost());
+//            System.out.println(redisConfig.getHost());
             jedis=jedisPool.getResource();
             String str = beanToString(value);
             if(str==null||str.length()<=0){

@@ -1,6 +1,8 @@
 package com.spike.dao;
 
+import com.spike.model.MiaoshaOrder;
 import com.spike.model.User;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -9,4 +11,5 @@ import org.apache.ibatis.annotations.Select;
 public interface UserDao {
     @Select("select * from user where id = #{id}")
      User getById(@Param("id") int id);
+
 }
