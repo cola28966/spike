@@ -77,7 +77,7 @@ public class GoodsController {
 	}
 
 
-	@RequestMapping(value = "/to_detail/{goodsId}")
+	@RequestMapping(value = "/detail/{goodsId}")
 	@ResponseBody
 	public Result<GoodsDetailVo> detail(MiaoshaUser user,
 						 @PathVariable("goodsId")long goodsId
@@ -108,7 +108,6 @@ public class GoodsController {
 		goodsDetailVo.setMiaoshaStatus(miaoshaStatus);
 		goodsDetailVo.setRemainSeconds(remainSeconds);
 		goodsDetailVo.setUser(user);
-		System.out.println(goodsDetailVo);
 		return Result.success(goodsDetailVo);
 	}
 	@RequestMapping(value = "/to_detail2/{goodsId}",produces = "text/html")
