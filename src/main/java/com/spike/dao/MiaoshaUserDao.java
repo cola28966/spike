@@ -2,11 +2,7 @@ package com.spike.dao;
 
 import com.spike.model.MiaoshaOrder;
 import com.spike.model.MiaoshaUser;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
-
+import org.apache.ibatis.annotations.*;
 
 
 @Mapper
@@ -18,4 +14,7 @@ public interface MiaoshaUserDao {
 	@Insert("insert into miaosha_user (login_count, nickname, register_date, salt, password, id)" +
 			"values(#{loginCount}, #{nickname}, #{registerDate},#{salt},#{password},#{id})")
 	public int insertMiaoshaUser(MiaoshaUser miaoshaUser);
+
+	@Update("update  miaosha_user set password = #{password} where id = #{id}")
+    int updatePassword(MiaoshaUser toBeUpdate);
 }

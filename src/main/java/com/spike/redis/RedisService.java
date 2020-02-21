@@ -1,6 +1,7 @@
 package com.spike.redis;
 
 import com.alibaba.fastjson.JSON;
+import com.spike.model.MiaoshaUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
@@ -83,6 +84,18 @@ public class RedisService {
             returnToPool(jedis);
         }
     }
+    public boolean delete(KeyPrefix keyPrefix,String key){
+        Jedis jedis= null;
+        try {
+            jedis=jedisPool.getResource();
+
+            String realKey = keyPrefix.getPrefix()+key;
+            Long res = jedis.del(realKey);
+            return res>0;
+        }finally {
+            returnToPool(jedis);
+        }
+    }
     private <T> String beanToString(T value) {
         if(value == null){
             return null;
@@ -120,6 +133,7 @@ public class RedisService {
             jedis.close();
         }
     }
+
 
 
 }
