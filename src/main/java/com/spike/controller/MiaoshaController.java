@@ -1,8 +1,12 @@
 package com.spike.controller;
 
+import com.spike.exception.GlobalException;
 import com.spike.model.MiaoshaOrder;
 import com.spike.model.MiaoshaUser;
 import com.spike.model.OrderInfo;
+import com.spike.rabbitmq.MQMessage;
+import com.spike.rabbitmq.MQSender;
+import com.spike.redis.GoodsKey;
 import com.spike.redis.RedisService;
 import com.spike.result.CodeMsg;
 import com.spike.result.Result;
@@ -33,6 +37,9 @@ public class MiaoshaController {
 	GoodsService goodsService;
 
 	@Autowired
+	MQSender mqSender;
+
+	@Autowired
 	OrderService orderService;
 
 	@Autowired
@@ -40,14 +47,14 @@ public class MiaoshaController {
 	//210
     @RequestMapping(value = "/do_miaosha",method = RequestMethod.POST)
 	@ResponseBody
-    public Result<OrderInfo> list(MiaoshaUser user,
+    public Result<Integer> list(MiaoshaUser user,
 					   @RequestParam("goodsId") long goodsId
 					   ) {
 
     	if(user==null){
     		return Result.error(CodeMsg.SESSION_ERROR);
 		}
-		//判断库存
+	/*	//判断库存
 		GoodsVo goods = goodsService.getGoodsVoByGoodsId(goodsId);
 		int stock = goods.getStockCount();
 		if(stock <= 0) {
@@ -60,8 +67,30 @@ public class MiaoshaController {
 		}
 		//减库存 下订单 写入秒杀订单
 		OrderInfo orderInfo = miaoshaService.miaosha(user, goods);
-		return Result.success(orderInfo);
+		return Result.success(orderInfo);*/
+		long stock = redisService.decr(GoodsKey.getGoodsStock,""+goodsId);
+		if(stock < 0) {
+			return Result.success(-1);
+		}
 
+		MQMessage message = new MQMessage();
+		message.setGoodsId(goodsId);
+		message.setUser(user);
+		mqSender.send(message);
+		return Result.success(0);
+    }
+
+	@RequestMapping(value = "/result",method = RequestMethod.GET)
+	@ResponseBody
+	public Result<Long> getResult(MiaoshaUser user,
+								@RequestParam("goodsId") long goodsId
+	) {
+
+		if(user==null){
+			return Result.error(CodeMsg.SESSION_ERROR);
+		}
+		long result = miaoshaService.getMiaoShaResult(user.getId(), goodsId);
+		return Result.success(result);
     }
 
 

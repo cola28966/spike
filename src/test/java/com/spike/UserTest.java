@@ -1,3 +1,4 @@
+/*
 package com.spike;
 
 import com.alibaba.fastjson.JSON;
@@ -34,7 +35,7 @@ public class UserTest {
         BufferedWriter bw = null;
 
         try {
-            fos = new FileOutputStream("D:/result.txt");
+            fos = new FileOutputStream("D:/tokens.txt");
             osw = new OutputStreamWriter(fos,"utf-8");
             bw = new BufferedWriter(osw);
             for(int i = 0;i<1000;++i){
@@ -46,7 +47,7 @@ public class UserTest {
                 user.setSalt("1a2b3c");
                 user.setPassword(MD5Util.inputPassToDbPass("123456", user.getSalt()));
                 System.out.println(user);
-
+                miaoshaUserService.insertMiaoShaUser(user);
                 URL url = new URL(urlString);
                 HttpURLConnection co = (HttpURLConnection)url.openConnection();
 
@@ -85,4 +86,4 @@ public class UserTest {
 
     }
 
-}
+}*/

@@ -2,6 +2,8 @@ package com.spike.controller;
 
 
 import com.spike.model.User;
+import com.spike.rabbitmq.MQReceiver;
+import com.spike.rabbitmq.MQSender;
 import com.spike.redis.RedisService;
 import com.spike.redis.UserKey;
 import com.spike.result.CodeMsg;
@@ -20,6 +22,14 @@ public class DemoController {
     UserService userService;
     @Autowired
     RedisService redisService;
+
+    @Autowired
+    MQSender mqSender;
+
+    @Autowired
+    MQReceiver mqReceiver;
+
+
     @RequestMapping("/hello")
     @ResponseBody
     Result<String> hello(){

@@ -1,3 +1,4 @@
+/*
 package com.spike;
 
 import org.junit.Test;
@@ -25,3 +26,4 @@ public class SpikeApplicationTests  implements ApplicationContextAware {
         System.out.println(applicationContext);
     }
 }
+*/
