@@ -12,11 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Service
-public class MiaoshaService implements InitializingBean {
+public class MiaoshaService  {
 	
 	@Autowired
 	GoodsService goodsService;
@@ -26,6 +28,8 @@ public class MiaoshaService implements InitializingBean {
 
 	@Autowired
 	RedisService redisService;
+
+
 
 	@Transactional()
 	public OrderInfo miaosha(MiaoshaUser user, GoodsVo goods) {
@@ -49,14 +53,7 @@ public class MiaoshaService implements InitializingBean {
 		return redisService.exists(MiaoshaKey.isGoodsOver,""+goodsId);
 	}
 
-	@Override
-	public void afterPropertiesSet() throws Exception {
-		List<GoodsVo> goodsVos= goodsService.listGoodsVo();
-		for(GoodsVo goods :goodsVos){
-			System.out.println(goods.getId());
-			redisService.set(GoodsKey.getGoodsStock,""+goods.getId(),goods.getStockCount());
-		}
-	}
+
 
 	public long getMiaoShaResult(Long userId, long goodsId) {
 		MiaoshaOrder order = orderService.getMiaoshaOrderByUserIdGoodsId(userId,goodsId);
@@ -74,4 +71,8 @@ public class MiaoshaService implements InitializingBean {
 	}
 
 
+	public void reset(List<GoodsVo> goodsList) {
+		goodsService.resetStock(goodsList);
+		orderService.deleteOrders();
+	}
 }
